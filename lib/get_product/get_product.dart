@@ -106,7 +106,11 @@ class _GetAllProductState extends State<GetAllProduct> {
                   child: FutureBuilder(
                     future: getApi(),
                     builder: (context, snapshot){
-                      if(!snapshot.hasData){
+                      if(snapshot.connectionState == ConnectionState.waiting){
+                        return Center(child: CircularProgressIndicator(),);
+                      }else if(snapshot.hasError){
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      }else{
                         return GridView.builder(
                           shrinkWrap: true,
                           scrollDirection: Axis.vertical,
@@ -144,8 +148,6 @@ class _GetAllProductState extends State<GetAllProduct> {
                             );
                           },
                         );
-                      }else{
-                        return Center(child: CircularProgressIndicator(),);
                       }
                     },
                   ),
